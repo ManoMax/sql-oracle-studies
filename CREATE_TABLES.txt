@@ -1,0 +1,49 @@
+CREATE TABLE CLIENTE (
+    cpf CHAR(11) NOT NULL,
+    nome varchar(50) NOT NULL,
+    email varchar(30) NOT NULL,
+    PRIMARY KEY (cpf)
+);
+
+CREATE TABLE FUNCIONARIO (
+    matricula INT NOT NULL,
+    cpf CHAR(11) NOT NULL,
+    identidade CHAR(7) NOT NULL,
+    nome VARCHAR(50) NOT NULL,
+    endereco VARCHAR(50) NOT NULL,
+    salario NUMERIC(7,2) NOT NULL,
+    funcao VARCHAR(15) NOT NULL,
+    matrSupervisor INT,
+    PRIMARY KEY (matricula),
+    CHECK (salario > 0)
+);
+
+CREATE TABLE TELEFONE_CLIENTE (
+    cpfCliente INT NOT NULL,
+    numero VARCHAR(15) NOT NULL,
+    PRIMARY KEY (cpfCliente, numero)
+);
+
+CREATE TABLE TELEFONE_FUNCIONARIO (
+    matFunc INT NOT NULL,
+    numero VARCHAR(15) NOT NULL,
+    PRIMARY KEY (matFunc, numero)
+);
+
+CREATE TABLE ENDERECO_CLIENTE (
+    cpfCliente INT NOT NULL,
+    rua varchar(50) NOT NULL,
+    num varchar(5) NOT NULL,
+    bairro varchar(20) NOT NULL,
+    cidade varchar(20) NOT NULL,
+    estado varchar(20) NOT NULL,
+    PRIMARY KEY (cpfCliente)
+);
+
+ALTER TABLE FUNCIONARIO ADD CONSTRAINT MatrDoSupervisor FOREIGN KEY(matrSupervisor) REFERENCES FUNCIONARIO(matricula);
+
+ALTER TABLE TELEFONE_CLIENTE ADD CONSTRAINT CPFCliente FOREIGN KEY(cpfCliente) REFERENCES CLIENTE(cpfCliente);
+
+ALTER TABLE TELEFONE_FUNCIONARIO ADD CONSTRAINT MatriculaFuncionario FOREIGN KEY(matFunc) REFERENCES FUNCIONARIO(matricula);
+
+ALTER TABLE ENDERECO_CLIENTE ADD CONSTRAINT CPFCLiente FOREIGN KEY(cpfCliente) REFERENCES CLIENTE(cpf);
