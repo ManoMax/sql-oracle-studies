@@ -1,0 +1,93 @@
+-- Entidades
+
+CREATE TABLE CLIENTE (
+    cpf CHAR(11) NOT NULL,
+    nome varchar(50) NOT NULL,
+    email varchar(30) NOT NULL,
+    crm INT NOT NULL,
+    PRIMARY KEY (cpf)
+);
+CREATE TABLE TELEFONE_CLIENTE (
+    cpfCliente CHAR(11) NOT NULL,
+    numero VARCHAR(15) NOT NULL,
+    PRIMARY KEY (cpfCliente, numero)
+);
+CREATE TABLE ENDERECO_CLIENTE (
+    cpfCliente CHAR(11) NOT NULL,
+    rua varchar(50) NOT NULL,
+    num varchar(5) NOT NULL,
+    bairro varchar(20) NOT NULL,
+    cidade varchar(20) NOT NULL,
+    estado varchar(20) NOT NULL,
+    PRIMARY KEY (cpfCliente)
+);
+
+CREATE TABLE FUNCIONARIO (
+    matricula INT NOT NULL,
+    cpf CHAR(11) NOT NULL,
+    identidade CHAR(7) NOT NULL,
+    nome VARCHAR(50) NOT NULL,
+    endereco VARCHAR(50) NOT NULL,
+    salario NUMERIC(7,2) NOT NULL,
+    funcao VARCHAR(15) NOT NULL,
+    matrSupervisor INT,
+    -- idFilial INT NOT NULL,
+    PRIMARY KEY (matricula),
+    CHECK (salario > 0)
+);
+CREATE TABLE TELEFONE_FUNCIONARIO (
+    matFunc INT NOT NULL,
+    numero VARCHAR(15) NOT NULL,
+    PRIMARY KEY (matFunc, numero)
+);
+CREATE TABLE DEPENDENTE_FUNCIONARIO (
+    matFunc INT NOT NULL,
+    cpf CHAR(11) NOT NULL,
+    nascimento DATE NOT NULL,
+    nome VARCHAR(50) NOT NULL,
+    PRIMARY KEY (matFunc, cpf)
+);
+
+CREATE TABLE FILIAL (
+    idFilial INT NOT NULL,
+    gerente INT NOT NULL,
+    nome VARCHAR(20) NOT NULL,
+    endereco VARCHAR(50) NOT NULL,
+    telefone VARCHAR(15) NOT NULL,
+    PRIMARY KEY (idFilial)
+);
+
+-- Relacionamentos
+
+CREATE TABLE FUNCIONARIO_POR_FILIAL (
+    matFunc INT NOT NULL,
+    idFilial INT NOT NULL,
+    PRIMARY KEY (matFunc, idFilial)
+);
+
+CREATE TABLE RECLAMACAO_CLIENTE_FILIAL (
+    cpfCliente CHAR(11) NOT NULL,
+    idFilial INT NOT NULL,
+    data DATE NOT NULL,
+    descricao VARCHAR(200) NOT NULL,
+    PRIMARY KEY(cpfCliente, idFilial)
+);
+
+-- Referencias
+
+ALTER TABLE TELEFONE_CLIENTE ADD CONSTRAINT CPFClienteTelefone FOREIGN KEY(cpfCliente) REFERENCES CLIENTE(cpf);
+ALTER TABLE ENDERECO_CLIENTE ADD CONSTRAINT CPFClienteEndereco FOREIGN KEY(cpfCliente) REFERENCES CLIENTE(cpf);
+
+ALTER TABLE FUNCIONARIO ADD CONSTRAINT MatrSupervisorFuncionario FOREIGN KEY(matrSupervisor) REFERENCES FUNCIONARIO(matricula);
+
+ALTER TABLE TELEFONE_FUNCIONARIO ADD CONSTRAINT MatriculaTelefoneFuncionario FOREIGN KEY(matFunc) REFERENCES FUNCIONARIO(matricula);
+ALTER TABLE DEPENDENTE_FUNCIONARIO ADD CONSTRAINT DependenteFuncionario FOREIGN KEY(matFunc) REFERENCES FUNCIONARIO(matricula);
+
+ALTER TABLE FILIAL ADD CONSTRAINT GerenteFilial FOREIGN KEY(gerente) REFERENCES FUNCIONARIO(matricula);
+-- ALTER TABLE FUNCIONARIO ADD CONSTRAINT IdFilialDoFuncionario FOREIGN KEY(idFilial) REFERENCES FILIAL(idFilial);
+
+ALTER TABLE FUNCIONARIO_POR_FILIAL ADD CONSTRAINT MatFuncPorFilial FOREIGN KEY(matFunc) REFERENCES FUNCIONARIO(matricula);
+ALTER TABLE FUNCIONARIO_POR_FILIAL ADD CONSTRAINT IdFuncPorFilial FOREIGN KEY(idFilial) REFERENCES FILIAL(idFilial);
+
+ALTER TABLE RECLAMACAO_CLIENTE_FILIAL ADD CONSTRAINT cpfReclamacaoClienteFilial FOREIGN KEY(cpfCliente) REFERENCES CLIENTE(cpf);
+ALTER TABLE RECLAMACAO_CLIENTE_FILIAL ADD CONSTRAINT idReclamacaoClienteFilial FOREIGN KEY(idFilial) REFERENCES FILIAL(idFilial);
