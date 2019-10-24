@@ -41,8 +41,8 @@ CREATE TABLE TELEFONE_FUNCIONARIO (
     PRIMARY KEY (matFunc, numero)
 );
 CREATE TABLE DEPENDENTE_FUNCIONARIO (
-    matFunc INT NOT NULL,
     cpf CHAR(11) NOT NULL,
+    matFunc INT NOT NULL,
     nascimento DATE NOT NULL,
     nome VARCHAR(50) NOT NULL,
     PRIMARY KEY (matFunc, cpf)
@@ -58,14 +58,14 @@ CREATE TABLE FILIAL (
 );
 
 CREATE TABLE CAIXA (
-    idFilial INT NOT NULL,
     numCaixa INT NOT NULL,
+    idFilial INT NOT NULL,
     PRIMARY KEY (numCaixa)
 );
 
 CREATE TABLE EQUIPAMENTO (
-    numCaixa INT NOT NULL,
     identificador INT NOT NULL,
+    numCaixa INT NOT NULL,
     descricao VARCHAR(100) NOT NULL,
     PRIMARY KEY(identificador)
 );
@@ -78,16 +78,35 @@ CREATE TABLE PRODUTO (
     PRIMARY KEY(idProduto)
 );
 CREATE TABLE CATEGORIA_PRODUTO (
-    idProduto INT NOT NULL,
     idCategoria INT NOT NULL,
+    idProduto INT NOT NULL,
     nome VARCHAR(20) NOT NULL,
     PRIMARY KEY(idProduto, idCategoria)
 );
 CREATE TABLE MARCA_PRODUTO (
-    idProduto INT NOT NULL,
     idMarca INT NOT NULL,
+    idProduto INT NOT NULL,
     nome VARCHAR(20) NOT NULL,
     PRIMARY KEY(idProduto, idMarca)
+);
+
+CREATE TABLE ORDEM_DE_COMPRA (
+    numNotaFiscal INT NOT NULL,
+    cpfCliente CHAR(11) NOT NULL,
+    matFuncionario INT NOT NULL,
+    idFilial INT NOT NULL,
+    numCaixa INT NOT NULL,
+    data DATE NOT NULL,
+    PRIMARY KEY(numNotaFiscal)
+);
+
+CREATE TABLE ITEM_DE_COMPRA (
+    idItemComprado INT NOT NULL,
+    numNotaFiscal INT NOT NULL,
+    quantidade INT NOT NULL,
+    precoProd NUMERIC(6,2) NOT NULL,
+    desconto NUMERIC(6,2) NOT NULL,
+    PRIMARY KEY(idItemComprado, numNotaFiscal)
 );
 
 -- Relacionamentos
@@ -126,6 +145,7 @@ CREATE TABLE PRODUTO_POR_FILIAL (
     PRIMARY KEY(idFilial, idProduto)
 );
 
+
 -- Referenciamentos / Contratos
 
 ALTER TABLE TELEFONE_CLIENTE ADD CONSTRAINT CPFClienteTelefone FOREIGN KEY(cpfCliente) REFERENCES CLIENTE(cpf);
@@ -156,3 +176,10 @@ ALTER TABLE MARCA_PRODUTO ADD CONSTRAINT IdProdutoMarca FOREIGN KEY(idProduto) R
 
 ALTER TABLE PRODUTO_POR_FILIAL ADD CONSTRAINT IdFilialEstoque FOREIGN KEY(idFilial) REFERENCES FILIAL(idFilial);
 ALTER TABLE PRODUTO_POR_FILIAL ADD CONSTRAINT IdProdutoEstoque FOREIGN KEY(idProduto) REFERENCES PRODUTO(idProduto);
+
+ALTER TABLE ORDEM_DE_COMPRA ADD CONSTRAINT CPFClienteOrdemCompra FOREIGN KEY(cpfCliente) REFERENCES CLIENTE(cpf);
+ALTER TABLE ORDEM_DE_COMPRA ADD CONSTRAINT MatFunciOrdemCompra FOREIGN KEY(matFuncionario) REFERENCES FUNCIONARIO(matricula);
+ALTER TABLE ORDEM_DE_COMPRA ADD CONSTRAINT IdFilialOrdemCompra FOREIGN KEY(idFilial) REFERENCES FILIAL(idFilial);
+ALTER TABLE ORDEM_DE_COMPRA ADD CONSTRAINT NumCaixaOrdemCompra FOREIGN KEY(numCaixa) REFERENCES CAIXA(numCaixa);
+
+ALTER TABLE ITEM_DE_COMPRA ADD CONSTRAINT NumNotaFiscalItem FOREIGN KEY(numNotaFiscal) REFERENCES ORDEM_DE_COMPRA(numNotaFiscal);
