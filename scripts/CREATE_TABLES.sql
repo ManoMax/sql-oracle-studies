@@ -28,7 +28,7 @@ CREATE TABLE FUNCIONARIO (
     identidade CHAR(7) NOT NULL,
     nome VARCHAR(50) NOT NULL,
     endereco VARCHAR(50) NOT NULL,
-    salario NUMERIC(7,2) NOT NULL,
+    salario NUMERIC(6,2) NOT NULL,
     funcao VARCHAR(15) NOT NULL,
     matrSupervisor INT,
     idFilial INT NOT NULL,
@@ -70,6 +70,26 @@ CREATE TABLE EQUIPAMENTO (
     PRIMARY KEY(identificador)
 );
 
+CREATE TABLE PRODUTO (
+    idProduto INT NOT NULL,
+    nome VARCHAR(20) NOT NULL,
+    descricao VARCHAR(50) NOT NULL,
+    margemLucro NUMERIC(6,2) NOT NULL,
+    PRIMARY KEY(idProduto)
+);
+CREATE TABLE CATEGORIA_PRODUTO (
+    idProduto INT NOT NULL,
+    idCategoria INT NOT NULL,
+    nome VARCHAR(20) NOT NULL,
+    PRIMARY KEY(idProduto, idCategoria)
+);
+CREATE TABLE MARCA_PRODUTO (
+    idProduto INT NOT NULL,
+    idMarca INT NOT NULL,
+    nome VARCHAR(20) NOT NULL,
+    PRIMARY KEY(idProduto, idMarca)
+);
+
 -- Relacionamentos
 
 CREATE TABLE FUNCIONARIO_POR_FILIAL (
@@ -91,8 +111,19 @@ CREATE TABLE PLANO_DE_MANUTENCAO (
     identificadorEquip INT NOT NULL,
     descManutencao VARCHAR(150) NOT NULL,
     data DATE NOT NULL,
-    custo NUMERIC(9,2) NOT NULL,
+    custo NUMERIC(5,2) NOT NULL,
     PRIMARY KEY(numCaixa, identificadorEquip)
+);
+
+CREATE TABLE PRODUTO_POR_FILIAL (
+    idFilial INT NOT NULL,
+    idProduto INT NOT NULL,
+    dataCompra DATE NOT NULL,
+    dataValidade DATE NOT NULL,
+    precoCompra NUMERIC(6,2) NOT NULL,
+    precoVenda NUMERIC(6,2) NOT NULL,
+    quantidade INT NOT NULL,
+    PRIMARY KEY(idFilial, idProduto)
 );
 
 -- Referenciamentos / Contratos
@@ -119,3 +150,9 @@ ALTER TABLE EQUIPAMENTO ADD CONSTRAINT NumCaixaEquipamento FOREIGN KEY(numCaixa)
 
 ALTER TABLE PLANO_DE_MANUTENCAO ADD CONSTRAINT NumCaixaPlanoManutencao FOREIGN KEY(numCaixa) REFERENCES CAIXA(numCaixa);
 ALTER TABLE PLANO_DE_MANUTENCAO ADD CONSTRAINT IndenEquipPlanoManutencao FOREIGN KEY(identificadorEquip) REFERENCES EQUIPAMENTO(identificador);
+
+ALTER TABLE CATEGORIA_PRODUTO ADD CONSTRAINT IdProdutoCategoria FOREIGN KEY(idProduto) REFERENCES PRODUTO(idProduto);
+ALTER TABLE MARCA_PRODUTO ADD CONSTRAINT IdProdutoMarca FOREIGN KEY(idProduto) REFERENCES PRODUTO(idProduto);
+
+ALTER TABLE PRODUTO_POR_FILIAL ADD CONSTRAINT IdFilialEstoque FOREIGN KEY(idFilial) REFERENCES FILIAL(idFilial);
+ALTER TABLE PRODUTO_POR_FILIAL ADD CONSTRAINT IdProdutoEstoque FOREIGN KEY(idProduto) REFERENCES PRODUTO(idProduto);
