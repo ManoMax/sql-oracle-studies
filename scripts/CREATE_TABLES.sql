@@ -123,6 +123,28 @@ CREATE TABLE ITEM_DE_COMPRA (
     PRIMARY KEY(idItemComprado, numNotaFiscal)
 );
 
+CREATE TABLE SOLICITACAO(
+    idSolicitacao INT NOT NULL,
+    dataSolicitacao DATE NOT NULL,
+    dataPrevistaEntrega DATE NOT NULL,
+    dataEntrega DATE NOT NULL,
+    valorCompra NUMERIC(6,2) NOT NULL, 
+    prazoPagamento INT NOT NULL,
+    codFilial INT NOT NULL,
+    idNotaFiscal INT NOT NULL,
+    PRIMARY KEY(idSolicitacao)
+
+);
+
+CREATE TABLE NOTA_FISCAL(
+    idNotaFiscal INT NOT NULL,
+    cnpj CHAR(14) NOT NULL,
+    quantidade INT NOT NULL,
+    dataCompra DATE NOT NULL,
+    valorCompra NUMERIC (6,2) NOT NULL,
+    PRIMARY KEY(idNotaFiscal)
+);
+
 -- Relacionamentos
 
 CREATE TABLE FUNCIONARIO_POR_FILIAL (
@@ -159,27 +181,7 @@ CREATE TABLE PRODUTO_POR_FILIAL (
     PRIMARY KEY(idFilial, idProduto)
 );
 
-CREATE TABLE SOLICITACAO(
-    idSolicitacao INT NOT NULL,
-    dataSolicitacao DATE NOT NULL,
-    dataPrevistaEntrega DATE NOT NULL,
-    dataEntrega DATE NOT NULL,
-    valorCompra NUMERIC(6,2) NOT NULL, 
-    prazoPagamento INT NOT NULL,
-    codFilial INT NOT NULL,
-    idNotaFiscal INT NOT NULL,
-    PRIMARY KEY(idSolicitacao)
 
-);
-
-CREATE TABLE NOTA_FISCAL(
-    idNotaFiscal INT NOT NULL,
-    cnpj CHAR(14) NOT NULL,
-    quantidade INT NOT NULL,
-    dataCompra DATE NOT NULL,
-    valorCompra NUMERIC (6,2) NOT NULL,
-    PRIMARY KEY(idNotaFiscal)
-);
 
 
 
@@ -225,3 +227,4 @@ ALTER TABLE ITEM_DE_COMPRA ADD CONSTRAINT NumNotaFiscal2 FOREIGN KEY(numNotaFisc
 ALTER TABLE SOLICITACAO ADD CONSTRAINT IdNumNotaFiscal FOREIGN KEY(idNotaFiscal) REFERENCES NOTA_FISCAL(idNotaFiscal);
 
 ALTER TABLE TELEFONE_FORNECEDORES ADD CONSTRAINT CnpjFornecedorTelefone FOREIGN KEY(cnpjFornecedor) REFERENCES FORNECEDORES(cnpj);
+
