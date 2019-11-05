@@ -13,3 +13,6 @@ Especificações [aqui](https://drive.google.com/file/d/1gLBM9L-V7fMxNv8IYO2l_4j
 - [@CarolinySilva](https://github.com/CarolinySilva).
 - [@lucasaires](https://github.com/lucasaires).
 - [@ManoMax](https://github.com/ManoMax).
+
+#### Professor:
+- [Cláudio Baptista](https://sites.google.com/view/bancodedados1).
