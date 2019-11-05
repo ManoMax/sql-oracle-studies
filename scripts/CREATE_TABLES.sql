@@ -1,4 +1,4 @@
--- Entidades
+-- Entidade
 
 CREATE TABLE CLIENTE (
     cpf CHAR(11) NOT NULL,
@@ -12,6 +12,7 @@ CREATE TABLE CLIENTE (
     estado varchar(20) NOT NULL,
     PRIMARY KEY (cpf)
 );
+-- Atributo Multivalorado
 CREATE TABLE TELEFONE_CLIENTE (
     cpfCliente CHAR(11) NOT NULL,
     numero VARCHAR(15) NOT NULL,
@@ -27,105 +28,146 @@ CREATE TABLE FUNCIONARIO (
     endereco VARCHAR(50) NOT NULL,
     salario NUMERIC(6,2) NOT NULL,
     funcao VARCHAR(15) NOT NULL,
+    -- relacionamento
     matrSupervisor INT,
     idFilial INT NOT NULL,
     PRIMARY KEY (matricula),
     CHECK (salario > 0)
 );
+-- Atributo Multivalorado
 CREATE TABLE TELEFONE_FUNCIONARIO (
     matFunc INT NOT NULL,
     numero VARCHAR(15) NOT NULL,
     FOREIGN KEY(matFunc) REFERENCES FUNCIONARIO(matricula),
     PRIMARY KEY (matFunc, numero)
 );
+-- Entidade Fraca
 CREATE TABLE DEPENDENTE_FUNCIONARIO (
     cpf CHAR(11) NOT NULL,
-    matFunc INT NOT NULL,
     nascimento DATE NOT NULL,
     nome VARCHAR(50) NOT NULL,
+    -- relacionamento
+    matFunc INT NOT NULL,
     FOREIGN KEY(matFunc) REFERENCES FUNCIONARIO(matricula),
     PRIMARY KEY (matFunc, cpf)
 );
 
 CREATE TABLE FILIAL (
     idFilial INT NOT NULL,
-    gerente INT NOT NULL,
     nome VARCHAR(20) NOT NULL,
     endereco VARCHAR(50) NOT NULL,
     telefone VARCHAR(15) NOT NULL,
+    -- relacionamento
+    gerente INT NOT NULL,
     FOREIGN KEY(gerente) REFERENCES FUNCIONARIO(matricula),
     PRIMARY KEY (idFilial)
 );
 
 CREATE TABLE CAIXA (
     numCaixa INT NOT NULL,
+    -- relacionamento
     idFilial INT NOT NULL,
     FOREIGN KEY(idFilial) REFERENCES FILIAL(idFilial),
     PRIMARY KEY (numCaixa)
 );
 
+-- Entidade Fraca
 CREATE TABLE EQUIPAMENTO (
     idEquip INT NOT NULL,
-    numCaixa INT NOT NULL,
     descricao VARCHAR(100) NOT NULL,
+    -- relacionamento
+    numCaixa INT NOT NULL,
     FOREIGN KEY(numCaixa) REFERENCES CAIXA(numCaixa),
     PRIMARY KEY(idEquip, numCaixa)
 );
 
+CREATE TABLE MARCA_PRODUTO (
+    idMarca INT NOT NULL,
+    nome VARCHAR(20) NOT NULL,
+    PRIMARY KEY(idMarca)
+);
+CREATE TABLE CATEGORIA_PRODUTO (
+    idCategoria INT NOT NULL,
+    nome VARCHAR(20) NOT NULL,
+    PRIMARY KEY(idCategoria)
+);
 CREATE TABLE PRODUTO (
     idProduto INT NOT NULL,
     nome VARCHAR(20) NOT NULL,
     descricao VARCHAR(50) NOT NULL,
     margemLucro NUMERIC(6,2) NOT NULL,
-    PRIMARY KEY(idProduto)
-);
-CREATE TABLE CATEGORIA_PRODUTO (
-    idCategoria INT NOT NULL,
-    idProduto INT NOT NULL,
-    nome VARCHAR(20) NOT NULL,
-    FOREIGN KEY(idProduto) REFERENCES PRODUTO(idProduto),
-    PRIMARY KEY(idCategoria)
-);
-CREATE TABLE MARCA_PRODUTO (
+    -- Estoque
+    idFilial INT NOT NULL,
+    dataCompra DATE NOT NULL,
+    dataValidade DATE NOT NULL,
+    precoCompra NUMERIC(6,2) NOT NULL,
+    precoVenda NUMERIC(6,2) NOT NULL,
+    quantidade INT NOT NULL,
+    -- relacionamento
     idMarca INT NOT NULL,
-    idProduto INT NOT NULL, --
-    nome VARCHAR(20) NOT NULL,
-    FOREIGN KEY(idProduto) REFERENCES PRODUTO(idProduto),
-    PRIMARY KEY(idMarca)
+    idCategoria INT NOT NULL,
+    FOREIGN KEY(idFilial) REFERENCES FILIAL(idFilial),
+    FOREIGN KEY(idMarca) REFERENCES MARCA_PRODUTO(idMarca),
+    FOREIGN KEY(idCategoria) REFERENCES CATEGORIA_PRODUTO(idCategoria),
+    PRIMARY KEY(idProduto)
 );
 
 CREATE TABLE ORDEM_DE_COMPRA (
     numNotaFiscal INT NOT NULL,
-    cpfCliente CHAR(11) NOT NULL,
-    matFuncionario INT NOT NULL,
-    idFilial INT NOT NULL,
+    data TIMESTAMP NOT NULL,
+    -- relacionamento
     numCaixa INT NOT NULL,
-    data DATE NOT NULL,
-    FOREIGN KEY(cpfCliente) REFERENCES CLIENTE(cpf),
-    FOREIGN KEY(matFuncionario) REFERENCES FUNCIONARIO(matricula),
-    FOREIGN KEY(idFilial) REFERENCES FILIAL(idFilial),
+    cpfCliente CHAR(11) NOT NULL,
+    idFilial INT NOT NULL,
+    matFuncionario INT NOT NULL,
     FOREIGN KEY(numCaixa) REFERENCES CAIXA(numCaixa),
+    FOREIGN KEY(cpfCliente) REFERENCES CLIENTE(cpf),
+    FOREIGN KEY(idFilial) REFERENCES FILIAL(idFilial),
+    FOREIGN KEY(matFuncionario) REFERENCES FUNCIONARIO(matricula),
     PRIMARY KEY(numNotaFiscal)
 );
 
 CREATE TABLE NOTA_FISCAL(
-    idNotaFiscal INT NOT NULL,
+    numero INT NOT NULL,
     cnpj CHAR(14) NOT NULL,
     quantidade INT NOT NULL,
     dataCompra DATE NOT NULL,
-    valorCompra NUMERIC (6,2) NOT NULL,
-    PRIMARY KEY(idNotaFiscal)
+    valorPorItem NUMERIC (6,2) NOT NULL,
+    PRIMARY KEY(numero)
 );
 
 CREATE TABLE ITEM_DE_COMPRA (
     idItemComprado INT NOT NULL,
-    numNotaFiscal INT NOT NULL,
     quantidade INT NOT NULL,
     precoProd NUMERIC(6,2) NOT NULL,
     desconto NUMERIC(6,2) NOT NULL,
-    FOREIGN KEY(numNotaFiscal) REFERENCES ORDEM_DE_COMPRA(numNotaFiscal),
-    FOREIGN KEY(numNotaFiscal) REFERENCES NOTA_FISCAL(idNotaFiscal),
+    -- relacionamento
+    idProduto INT NOT NULL,
+    notaFiscalOrdemDeCompra INT NOT NULL,
+    numNotaFiscal INT NOT NULL,
+    FOREIGN KEY(idProduto) REFERENCES PRODUTO(idProduto),
+    FOREIGN KEY(notaFiscalOrdemDeCompra) REFERENCES ORDEM_DE_COMPRA(numNotaFiscal),
+    FOREIGN KEY(numNotaFiscal) REFERENCES NOTA_FISCAL(numero),
     PRIMARY KEY(idItemComprado)
+);
+
+CREATE TABLE FORNECEDORES(
+    cnpj CHAR(14) NOT NULL,
+    nome VARCHAR(50) NOT NULL,
+    endereco VARCHAR(50) NOT NULL,
+    email VARCHAR(30) NOT NULL,
+    site VARCHAR(50) NOT NULL,
+    -- relacionamento
+    idCategoria INT NOT NULL,
+    FOREIGN KEY(idCategoria) REFERENCES CATEGORIA_PRODUTO(idCategoria),
+    PRIMARY KEY(cnpj)
+);
+-- Atributo Multivalorado
+CREATE TABLE TELEFONE_FORNECEDORES(
+    cnpjFornecedor CHAR(14) NOT NULL,
+    numero VARCHAR(15) NOT NULL,
+    FOREIGN KEY(cnpjFornecedor) REFERENCES FORNECEDORES(cnpj),
+    PRIMARY KEY (cnpjFornecedor, numero)
 );
 
 CREATE TABLE SOLICITACAO(
@@ -135,79 +177,44 @@ CREATE TABLE SOLICITACAO(
     dataEntrega DATE NOT NULL,
     valorCompra NUMERIC(6,2) NOT NULL, 
     prazoPagamento INT NOT NULL,
-    codFilial INT NOT NULL,
-    idNotaFiscal INT NOT NULL,
-    FOREIGN KEY(idNotaFiscal) REFERENCES NOTA_FISCAL(idNotaFiscal),
-    PRIMARY KEY(idSolicitacao) -- Recebe Fornecedor
-);
-
-CREATE TABLE FORNECEDORES(
-    cnpj CHAR(14) NOT NULL,
-    idCategoria INT NOT NULL,
-    nome VARCHAR(50) NOT NULL,
-    endereco VARCHAR(50) NOT NULL,
-    email VARCHAR(30) NOT NULL,
-    site VARCHAR(50) NOT NULL,
-    FOREIGN KEY(idCategoria) REFERENCES CATEGORIA_PRODUTO(idCategoria),
-    PRIMARY KEY(cnpj)
-);
-CREATE TABLE TELEFONE_FORNECEDORES(
+    -- relacionamento
+    idFilial INT NOT NULL,
+    numNotaFiscal INT NOT NULL,
     cnpjFornecedor CHAR(14) NOT NULL,
-    numero VARCHAR(15) NOT NULL,
+    FOREIGN KEY(idFilial) REFERENCES FILIAL(idFilial),
+    FOREIGN KEY(numNotaFiscal) REFERENCES NOTA_FISCAL(numero),
     FOREIGN KEY(cnpjFornecedor) REFERENCES FORNECEDORES(cnpj),
-    PRIMARY KEY (cnpjFornecedor, numero)
+    PRIMARY KEY(idSolicitacao)
 );
 
 -- Relacionamentos
 
-CREATE TABLE FUNCIONARIO_POR_FILIAL (
-    matFunc INT NOT NULL,
-    idFilial INT NOT NULL,
-    FOREIGN KEY(matFunc) REFERENCES FUNCIONARIO(matricula),
-    FOREIGN KEY(idFilial) REFERENCES FILIAL(idFilial),
-    PRIMARY KEY (matFunc, idFilial)
-    --
-);
-
 CREATE TABLE RECLAMACAO_CLIENTE_FILIAL (
-    cpfCliente CHAR(11) NOT NULL,
-    idFilial INT NOT NULL,
     data DATE NOT NULL,
     descricao VARCHAR(200) NOT NULL,
+    -- relacionamento
+    cpfCliente CHAR(11) NOT NULL,
+    idFilial INT NOT NULL,
     FOREIGN KEY(cpfCliente) REFERENCES CLIENTE(cpf),
     FOREIGN KEY(idFilial) REFERENCES FILIAL(idFilial),
     PRIMARY KEY(cpfCliente, idFilial)
 );
 
 CREATE TABLE PLANO_DE_MANUTENCAO (
-    numCaixa INT NOT NULL,
-    idEquip INT NOT NULL,
-    idFuncionario INT NOT NULL,
     descManutencao VARCHAR(150) NOT NULL,
     data DATE NOT NULL,
     custo NUMERIC(5,2) NOT NULL,
-    FOREIGN KEY(numCaixa) REFERENCES CAIXA(numCaixa),
+    -- relacionamento
+    idEquip INT NOT NULL,
+    numCaixa INT NOT NULL,
+    matrFuncionario INT NOT NULL,
     FOREIGN KEY(idEquip, numCaixa) REFERENCES EQUIPAMENTO(idEquip, numCaixa),
-    PRIMARY KEY(numCaixa, idEquip, idFuncionario)
-);
-
-CREATE TABLE PRODUTO_POR_FILIAL (
-    idFilial INT NOT NULL,
-    idProduto INT NOT NULL,
-    dataCompra DATE NOT NULL,
-    dataValidade DATE NOT NULL,
-    precoCompra NUMERIC(6,2) NOT NULL,
-    precoVenda NUMERIC(6,2) NOT NULL,
-    quantidade INT NOT NULL,
-    FOREIGN KEY(idFilial) REFERENCES FILIAL(idFilial),
-    FOREIGN KEY(idProduto) REFERENCES PRODUTO(idProduto),
-    PRIMARY KEY(idFilial, idProduto)
-    --
+    FOREIGN KEY(matrFuncionario) REFERENCES FUNCIONARIO(matricula),
+    PRIMARY KEY(numCaixa, idEquip, matrFuncionario)
 );
 
 
 -- Referenciamentos / Contratos
 
 ALTER TABLE FUNCIONARIO ADD CONSTRAINT MatrSupervisorFuncionario FOREIGN KEY(matrSupervisor) REFERENCES FUNCIONARIO(matricula);
-
 ALTER TABLE FUNCIONARIO ADD CONSTRAINT IdFilialDoFuncionario FOREIGN KEY(idFilial) REFERENCES FILIAL(idFilial);
