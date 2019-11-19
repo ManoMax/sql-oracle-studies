@@ -370,6 +370,23 @@ INSERT INTO MARCA(identificador, nome)
   UNION ALL SELECT  105, 'jujuba' FROM dual
 ;
 
+INSERT INTO CLIENTE(cpf, nome, email, pontos_crm, rua, num, cidade, estado, bairro)
+  SELECT            '123456789', 'Gabriel', 'gabriel@email.com', 100, 'R. Zero', '000', 'Cidade Neutra', 'Estado Invisivel', 'Bairro Secreto' FROM dual
+  UNION ALL SELECT  '234567890', 'Afranio', 'afranio@email.com', 99, 'R. Dois', '002', 'Cidade', 'Vista', 'Santa Mamãe' FROM dual
+  UNION ALL SELECT  '345678901', 'Lucas', 'lucas@email.com', 99, 'R. Três', '003', 'Cidade Bela', 'Vista Bela', 'Santa Mamãe' FROM dual
+  UNION ALL SELECT  '456789012', 'Carol', 'carol@email.com', 101, 'R. Quatro', '004', 'Cidade Linda', 'Vista Cega', 'Santa Aparecida' FROM dual
+  UNION ALL SELECT  '567890123', 'Baptista', 'baptista@email.com', 0, 'R. Dez', '100', 'Cidade Incrivel', 'Vista Torta', 'Santa Desaparecida' FROM dual
+;
+
+INSERT INTO ITEM(identificador, num_nota_fiscal_ordem, numero_nota_fiscal, quantidade, preco_produto, desconto)
+  SELECT             1000, NULL, NULL, 10, 100.00, 0 FROM dual
+  UNION ALL SELECT   2000, NULL, NULL, 9, 2.50, 0 FROM dual
+  UNION ALL SELECT   3000, NULL, NULL, 9, 200.00, 0 FROM dual
+  UNION ALL SELECT   4000, NULL, NULL, 9, 1.00, 0 FROM dual
+  UNION ALL SELECT   5000, NULL, NULL, 9, 999.00, 0 FROM dual
+;
+
+
 INSERT INTO PRODUTO (codigo_identificacao, nome, descricao, margem_lucro, codigo_filial, quantidade, preco_compra, preco_venda, data_compra, data_validade, id_marca, id_categoria)
   SELECT             10,'Arroz', 'Arroz branco integral', 1.00, 1, 100, 2.20, 3.20, TO_DATE('10/10/2019'), TO_DATE('12/01/2020'), 101, 1 FROM dual
   UNION ALL SELECT   11,'Feijao', 'Feijao carioca', 1.50, 1, 50, 2.50, 4.00, TO_DATE('08/10/2019'), TO_DATE('12/01/2020'), 101, 2 FROM dual
