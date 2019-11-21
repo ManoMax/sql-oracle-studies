@@ -1,3 +1,0 @@
-INSERT INTO FUNCIONARIO VALUES(123, 'charDasOnze', '1234567', 'Uma Pessoa Qualquer', 'Um Endereço tbm Qualquer', 1000, 'Aprendiz', null);
-
-INSERT INTO TELEFONE_FUNCIONARIO VALUES(123, '4002-8922');
