@@ -366,10 +366,14 @@ INSERT INTO FUNCIONARIO (matricula, cpf, identidade, nome, endereco, salario, fu
   UNION ALL SELECT  300, '690.530.260-10', '3456789', 'Caio', 'Rua C', 3000, 'Açougueiro', NULL, NULL FROM dual
   UNION ALL SELECT  400, '680.520.250-00', '4567890', 'Dalton', 'Rua D', 4000, 'Padeiro', NULL, NULL FROM dual
   UNION ALL SELECT  500, '670.510.240-90', '5678901', 'Euclides', 'Rua E', 5000, 'Limpeza', NULL, NULL FROM dual
-  UNION ALL SELECT  600, '660.500.230-80', '6789012', 'Fernando', 'Rua F', 6000, 'Seguranca', NULL, NULL FROM dual
-  UNION ALL SELECT  700, '660.490.220-80', '6789012', 'Gabriel', 'Rua G', 7000, 'Seguranca', NULL, NULL FROM dual
-  UNION ALL SELECT  800, '660.480.210-80', '6789012', 'Hericles', 'Rua H', 8000, 'Seguranca', NULL, NULL FROM dual
-  UNION ALL SELECT  900, '660.470.200-80', '6789012', 'Ítalo', 'Rua I', 9000, 'Caixa', NULL, NULL FROM dual
+  UNION ALL SELECT  600, '660.500.230-80', '0000001', 'Fernando', 'Rua F', 6000, 'Seguranca', NULL, NULL FROM dual
+  UNION ALL SELECT  700, '650.490.220-70', '1111111', 'Gabriel', 'Rua G', 7000, 'Seguranca', NULL, NULL FROM dual
+  UNION ALL SELECT  800, '640.480.210-60', '2222221', 'Hericles', 'Rua H', 8000, 'Seguranca', NULL, NULL FROM dual
+  UNION ALL SELECT  900, '630.470.190-50', '6789012', 'Ítalo', 'Rua I', 9000, 'Caixa', NULL, NULL FROM dual
+  UNION ALL SELECT  101, '620.460.180-40', '7890123', 'Ítalo', 'Rua W', 1001, 'Caixa', NULL, NULL FROM dual
+  UNION ALL SELECT  201, '610.450.170-30', '8901234', 'Dantas', 'Rua X', 2001, 'Caixa', NULL, NULL FROM dual
+  UNION ALL SELECT  301, '600.440.160-20', '9012345', 'Dantas', 'Rua Y', 3001, 'Açougueiro', NULL, NULL FROM dual
+  UNION ALL SELECT  401, '590.430.150-10', '0123456', 'Antas', 'Rua Z', 4001, 'Açougueiro', NULL, NULL FROM dual
 ;
 
 -- TELEFONE_FUNCIONARIO
@@ -381,6 +385,10 @@ INSERT INTO DEPENDENTE(cpf, data_nasc, nome, matricula_funcionario)
   UNION ALL SELECT  'cpf.sou.dep-04', TO_DATE('25/02/1998'), 'José', 300 FROM dual
   UNION ALL SELECT  'cpf.sou.dep-05', TO_DATE('25/01/1998'), 'Mateus', 400 FROM dual
   UNION ALL SELECT  'cpf.sou.dep-06', TO_DATE('25/12/1997'), 'Rita', 500 FROM dual
+  UNION ALL SELECT  'cpf.sou.dep-07', TO_DATE('25/11/1997'), 'Nina', 101 FROM dual
+  UNION ALL SELECT  'cpf.sou.dep-08', TO_DATE('25/10/1997'), 'Junin', 201 FROM dual
+  UNION ALL SELECT  'cpf.sou.dep-09', TO_DATE('25/09/1997'), 'Toin', 301 FROM dual
+  UNION ALL SELECT  'cpf.sou.dep-10', TO_DATE('25/08/1997'), 'Zezé', 401 FROM dual
 ;
 
 INSERT INTO FILIAL (codigo_identificacao, nome, endereco, telefone, gerente)
