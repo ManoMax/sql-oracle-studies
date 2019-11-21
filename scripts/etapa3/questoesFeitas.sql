@@ -1,4 +1,5 @@
 DROP VIEW TELEFONES_CLIENTES;
+DROP VIEW ACOUGUEIRO_DANTAS;
 
 -- Questão 1
 SELECT f.funcao, f.nome, f.matricula, f.cpf FROM FUNCIONARIO f GROUP BY f.funcao, f.nome, f.matricula, f.cpf ORDER BY f.funcao;
@@ -38,6 +39,16 @@ SELECT f.matricula, f.nome, f.cpf FROM (ORDEM_COMPRA o join (SELECT h.matricula,
 
 -- Questão 11
 SELECT * FROM SOLICITACAO s WHERE s.valor_compra > (SELECT AVG(s1.valor_compra) FROM SOLICITACAO s1);
+
+-- Questão 12
+SELECT AVG(i.quantidade) FROM ITEM i;
+
+-- Questão 13
+CREATE VIEW ACOUGUEIRO_DANTAS(cpf, data_nasc, nome, matricula_funcionario) AS SELECT d.cpf, d.data_nasc, d.nome, d.matricula_funcionario
+FROM (DEPENDENTE d join (SELECT * FROM FUNCIONARIO f1 WHERE f1.nome = 'Dantas' and f1.funcao = 'Açougueiro') f on (d.matricula_funcionario = f.matricula))
+GROUP BY d.cpf, d.data_nasc, d.nome, d.matricula_funcionario;
+-- Testando Questão 13
+SELECT cpf, data_nasc, nome, matricula_funcionario FROM ACOUGUEIRO_DANTAS;
 
 
 
