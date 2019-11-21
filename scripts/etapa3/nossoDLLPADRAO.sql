@@ -345,6 +345,9 @@ INSERT INTO CLIENTE(cpf, nome, email, pontos_crm, rua, num, cidade, estado, bair
   UNION ALL SELECT  '345.678.901-23', 'Lucas', 'lucas@email.com', 99, 'R. Três', '003', 'Cidade Bela', 'Vista Bela', 'Santa Mamãe' FROM dual
   UNION ALL SELECT  '456.789.012-34', 'Carol', 'carol@email.com', 101, 'R. Quatro', '004', 'Cidade Linda', 'Vista Cega', 'Santa Aparecida' FROM dual
   UNION ALL SELECT  '567.890.123-45', 'Baptista', 'baptista@email.com', 0, 'R. Dez', '100', 'Cidade Incrivel', 'Vista Torta', 'Santa Desaparecida' FROM dual
+  UNION ALL SELECT  '678.901.234.56', 'José', 'oEscolhido@email.com', 44, 'R. Premiada', '999', 'Cidade Milagrosa', 'Vista Rica', 'Santa Milhonaria' FROM dual
+  UNION ALL SELECT  '710.550.280-30', 'Antonio', 'funcionarioA@email.com', 10, 'R. Trabalhadora', '10', 'Cidade Empregada', 'Vista Embaçada', 'Santa Milhonaria' FROM dual
+  UNION ALL SELECT  '700.540.270-20', 'Bebiano', 'funcionarioB@email.com', 11, 'R. Trabalhadora', '11', 'Cidade Empregada', 'Vista Embaçada', 'Santa Milhonaria' FROM dual
 ;
 
 INSERT INTO TELEFONE_CLIENTE(telefone, cpf_cliente)
@@ -372,9 +375,9 @@ INSERT INTO FUNCIONARIO (matricula, cpf, identidade, nome, endereco, salario, fu
 -- TELEFONE_FUNCIONARIO
 
 INSERT INTO DEPENDENTE(cpf, data_nasc, nome, matricula_funcionario)
-  SELECT            'cpf.sou.dep-01', TO_DATE('25/05/1998'), 'Max', 700 FROM dual
+  SELECT            '123.456.789-01', TO_DATE('25/05/1998'), 'Max', 700 FROM dual
   UNION ALL SELECT  'cpf.sou.dep-02', TO_DATE('25/04/1998'), 'João', 100 FROM dual
-  UNION ALL SELECT  'cpf.sou.dep-03', TO_DATE('25/03/1998'), 'Maria', 200 FROM dual
+  UNION ALL SELECT  '345.678.901-23', TO_DATE('25/03/1998'), 'Maria', 200 FROM dual
   UNION ALL SELECT  'cpf.sou.dep-04', TO_DATE('25/02/1998'), 'José', 300 FROM dual
   UNION ALL SELECT  'cpf.sou.dep-05', TO_DATE('25/01/1998'), 'Mateus', 400 FROM dual
   UNION ALL SELECT  'cpf.sou.dep-06', TO_DATE('25/12/1997'), 'Rita', 500 FROM dual
@@ -440,11 +443,11 @@ INSERT INTO FORNECEDOR(cnpj, nome, endereco, email, id_categoria)
 
 INSERT INTO SOLICITACAO(identificador, data_solicitacao, data_prevista, data_entrega, valor_compra, prazo_pagamento, codigo_filial, cnpj_fornecedor)
   SELECT            70, TO_DATE('14/10/2019'), TO_DATE('15/10/2019'), TO_DATE('15/10/2019'), 100.00, TO_DATE('14/10/2019'), 1, 'cnpj500.111.000-22' FROM dual
-  UNION ALL SELECT  71, TO_DATE('17/10/2019'), TO_DATE('18/10/2019'), TO_DATE('18/10/2019'), 100.00, TO_DATE('17/10/2019'), 1, 'cnpj500.111.000-22' FROM dual
-  UNION ALL SELECT  72, TO_DATE('20/10/2019'), TO_DATE('21/10/2019'), TO_DATE('21/10/2019'), 100.00, TO_DATE('20/10/2019'), 1, 'cnpj500.111.000-25' FROM dual
-  UNION ALL SELECT  73, TO_DATE('22/10/2019'), TO_DATE('23/10/2019'), TO_DATE('23/10/2019'), 100.00, TO_DATE('22/10/2019'), 1, 'cnpj500.111.000-25' FROM dual
-  UNION ALL SELECT  74, TO_DATE('24/10/2019'), TO_DATE('25/10/2019'), TO_DATE('25/10/2019'), 100.00, TO_DATE('24/10/2019'), 1, 'cnpj500.111.000-26' FROM dual
-  UNION ALL SELECT  75, TO_DATE('27/10/2019'), TO_DATE('28/10/2019'), TO_DATE('28/10/2019'), 100.00, TO_DATE('27/10/2019'), 1, 'cnpj500.111.000-26' FROM dual
+  UNION ALL SELECT  71, TO_DATE('17/10/2019'), TO_DATE('18/10/2019'), TO_DATE('18/10/2019'), 200.00, TO_DATE('17/10/2019'), 1, 'cnpj500.111.000-22' FROM dual
+  UNION ALL SELECT  72, TO_DATE('20/10/2019'), TO_DATE('21/10/2019'), TO_DATE('21/10/2019'), 300.00, TO_DATE('20/10/2019'), 1, 'cnpj500.111.000-25' FROM dual
+  UNION ALL SELECT  73, TO_DATE('22/10/2019'), TO_DATE('23/10/2019'), TO_DATE('23/10/2019'), 400.00, TO_DATE('22/10/2019'), 1, 'cnpj500.111.000-25' FROM dual
+  UNION ALL SELECT  74, TO_DATE('24/10/2019'), TO_DATE('25/10/2019'), TO_DATE('25/10/2019'), 500.00, TO_DATE('24/10/2019'), 1, 'cnpj500.111.000-26' FROM dual
+  UNION ALL SELECT  75, TO_DATE('27/10/2019'), TO_DATE('28/10/2019'), TO_DATE('28/10/2019'), 600.00, TO_DATE('27/10/2019'), 1, 'cnpj500.111.000-26' FROM dual
 ;
 INSERT INTO NOTA_FISCAL(numero, cnpj, quantidade, data, valor_por_item, identificador_solicitacao)
   SELECT            800, 'cnpj100.000.111-22', 10, TO_DATE('15/10/2019'), 100.00, 70 FROM dual
@@ -452,6 +455,7 @@ INSERT INTO NOTA_FISCAL(numero, cnpj, quantidade, data, valor_por_item, identifi
   UNION ALL SELECT  802, 'cnpj100.000.111-24', 5, TO_DATE('17/10/2019'), 500.00, 71 FROM dual
   UNION ALL SELECT  803, 'cnpj100.000.111-25', 10, TO_DATE('18/10/2019'), 200.00, 71 FROM dual
   UNION ALL SELECT  804, 'cnpj100.000.111-26', 50, TO_DATE('19/10/2019'), 20.00, 71 FROM dual
+  UNION ALL SELECT  805, 'cnpj100.000.111-27', 50, TO_DATE('20/10/2019'), 30.00, 72 FROM dual
 ;
 
 -- Telefone Fornecedor
@@ -462,6 +466,9 @@ INSERT INTO ORDEM_COMPRA(numero_nota_fiscal, data_hora, cpf_cliente, codigo_fili
   UNION ALL SELECT  402, timestamp '2019-10-12 21:22:23', '234.567.890-12', 2, 300, 91 FROM dual
   UNION ALL SELECT  403, timestamp '2020-10-12 21:22:23', '234.567.890-12', 3, 300, 92 FROM dual
   UNION ALL SELECT  404, timestamp '2021-10-12 21:22:23', '567.890.123-45', 4, 100, 93 FROM dual
+  UNION ALL SELECT  405, timestamp '2022-10-12 21:22:23', '678.901.234.56', 4, 400, 94 FROM dual
+  UNION ALL SELECT  406, timestamp '2023-10-12 21:22:23', '710.550.280-30', 4, 400, 95 FROM dual
+  UNION ALL SELECT  407, timestamp '2024-10-12 21:22:23', '700.540.270-20', 4, 400, 96 FROM dual
 ;
 
 INSERT INTO ITEM(identificador, num_nota_fiscal_ordem, numero_nota_fiscal, quantidade, preco_produto, desconto)
@@ -470,6 +477,7 @@ INSERT INTO ITEM(identificador, num_nota_fiscal_ordem, numero_nota_fiscal, quant
   UNION ALL SELECT   3000, 402, 802, 9, 200.00, 0 FROM dual
   UNION ALL SELECT   4000, 403, 803, 9, 1.00, 0 FROM dual
   UNION ALL SELECT   5000, 404, 804, 9, 999.00, 0 FROM dual
+  UNION ALL SELECT   6000, 405, 805, 11, 999.00, 0 FROM dual
 ;
 
 -- REALIZA_RECLAMACAO
