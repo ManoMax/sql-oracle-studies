@@ -9,6 +9,7 @@ SELECT AVG(p.preco_venda - p.preco_compra) FROM PRODUTO p GROUP BY p.preco_compr
 -- Questão 3
 CREATE VIEW TELEFONES_CLIENTES(nome, telefone) AS SELECT c.nome, t.telefone FROM (CLIENTE c join TELEFONE_CLIENTE t on (c.cpf = t.cpf_cliente))
 GROUP BY c.nome, t.telefone ORDER BY c.nome;
+-- Testando Questão 3
 SELECT nome, telefone FROM TELEFONES_CLIENTES;
 
 -- Questão 4
@@ -24,9 +25,14 @@ GROUP BY c.nome, c.rua, c.num, c.bairro, c.cidade, c.estado;
 -- Questão 7
 SELECT * FROM (CLIENTE c join DEPENDENTE d on (c.cpf = d.cpf));
 
---SELECT i.preco_produto FROM (ITEM i join ORDEM_COMPRA o on (i.num_nota_fiscal_ordem = o.numero_nota_fiscal));
---SELECT i.preco_produto FROM (ITEM i join (SELECT o1.* FROM (ORDEM_COMPRA o1 join CLIENTE c on (o1.cpf_cliente = c.cpf))) o on (i.num_nota_fiscal_ordem = o.numero_nota_fiscal));
---SELECT i.preco_produto FROM (ITEM i join (SELECT o1.* FROM (ORDEM_COMPRA o1 join (SELECT c1.* FROM CLIENTE c1 WHERE c1.nome = 'José') c on (o1.cpf_cliente = c.cpf))) o on (i.num_nota_fiscal_ordem = o.numero_nota_fiscal));
-
 -- Questão 8
-SELECT SUM(i.preco_produto * i.quantidade) FROM (ITEM i join (SELECT o1.* FROM (ORDEM_COMPRA o1 join (SELECT c1.* FROM CLIENTE c1 WHERE c1.nome = 'José') c on (o1.cpf_cliente = c.cpf))) o on (i.num_nota_fiscal_ordem = o.numero_nota_fiscal));
+SELECT SUM(i.preco_produto * i.quantidade) FROM 
+(ITEM i join (SELECT o1.* FROM (ORDEM_COMPRA o1 join 
+(SELECT c1.* FROM CLIENTE c1 WHERE c1.nome = 'José') c on (o1.cpf_cliente = c.cpf))) o on (i.num_nota_fiscal_ordem = o.numero_nota_fiscal));
+
+-- Questão 9
+SELECT f.funcao, COUNT(f.funcao) FROM FUNCIONARIO f GROUP BY f.funcao;
+
+-- Questão 10
+SELECT f.matricula, f.nome, f.cpf FROM (ORDEM_COMPRA o join (SELECT h.matricula, h.nome, h.cpf FROM FUNCIONARIO h WHERE h.funcao != 'Caixa') f on (f.cpf = o.cpf_cliente)) GROUP BY f.matricula, f.nome, f.cpf;
+
