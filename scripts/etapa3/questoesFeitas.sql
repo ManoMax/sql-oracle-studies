@@ -36,3 +36,9 @@ SELECT f.funcao, COUNT(f.funcao) FROM FUNCIONARIO f GROUP BY f.funcao;
 -- Questão 10
 SELECT f.matricula, f.nome, f.cpf FROM (ORDEM_COMPRA o join (SELECT h.matricula, h.nome, h.cpf FROM FUNCIONARIO h WHERE h.funcao != 'Caixa') f on (f.cpf = o.cpf_cliente)) GROUP BY f.matricula, f.nome, f.cpf;
 
+-- Questão 11
+SELECT * FROM SOLICITACAO s WHERE s.valor_compra > (SELECT AVG(s1.valor_compra) FROM SOLICITACAO s1);
+
+
+
+
