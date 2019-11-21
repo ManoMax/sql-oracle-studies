@@ -23,3 +23,10 @@ GROUP BY c.nome, c.rua, c.num, c.bairro, c.cidade, c.estado;
 
 -- Questão 7
 SELECT * FROM (CLIENTE c join DEPENDENTE d on (c.cpf = d.cpf));
+
+--SELECT i.preco_produto FROM (ITEM i join ORDEM_COMPRA o on (i.num_nota_fiscal_ordem = o.numero_nota_fiscal));
+--SELECT i.preco_produto FROM (ITEM i join (SELECT o1.* FROM (ORDEM_COMPRA o1 join CLIENTE c on (o1.cpf_cliente = c.cpf))) o on (i.num_nota_fiscal_ordem = o.numero_nota_fiscal));
+--SELECT i.preco_produto FROM (ITEM i join (SELECT o1.* FROM (ORDEM_COMPRA o1 join (SELECT c1.* FROM CLIENTE c1 WHERE c1.nome = 'José') c on (o1.cpf_cliente = c.cpf))) o on (i.num_nota_fiscal_ordem = o.numero_nota_fiscal));
+
+-- Questão 8
+SELECT SUM(i.preco_produto * i.quantidade) FROM (ITEM i join (SELECT o1.* FROM (ORDEM_COMPRA o1 join (SELECT c1.* FROM CLIENTE c1 WHERE c1.nome = 'José') c on (o1.cpf_cliente = c.cpf))) o on (i.num_nota_fiscal_ordem = o.numero_nota_fiscal));
