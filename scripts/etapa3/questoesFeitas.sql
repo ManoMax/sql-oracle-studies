@@ -1,5 +1,6 @@
 DROP VIEW TELEFONES_CLIENTES;
 DROP VIEW ACOUGUEIRO_DANTAS;
+DROP VIEW CLIENTES_ESTRANGEIROS;
 
 -- Questão 1
 SELECT f.funcao, f.nome, f.matricula, f.cpf FROM FUNCIONARIO f GROUP BY f.funcao, f.nome, f.matricula, f.cpf ORDER BY f.funcao;
@@ -49,6 +50,29 @@ FROM (DEPENDENTE d join (SELECT * FROM FUNCIONARIO f1 WHERE f1.nome = 'Dantas' a
 GROUP BY d.cpf, d.data_nasc, d.nome, d.matricula_funcionario;
 -- Testando Questão 13
 SELECT cpf, data_nasc, nome, matricula_funcionario FROM ACOUGUEIRO_DANTAS;
+
+-- Questão 14
+CREATE VIEW CLIENTES_ESTRANGEIROS(cpf, nome, pontos_crm, rua, num, cidade, estado, bairro, telefone) AS SELECT c.cpf, c.nome, c.pontos_crm, c.rua, c.num, c.cidade, c.estado, c.bairro, t.telefone 
+FROM (CLIENTE c left join TELEFONE_CLIENTE t on (c.cpf = t.cpf_cliente))
+WHERE c.cidade <> 'Campina Grande' and (NOT EXISTS (SELECT * FROM TELEFONE_CLIENTE d WHERE c.cpf = t.cpf_cliente));
+
+SELECT * FROM CLIENTE;
+
+SELECT * FROM TELEFONE_CLIENTE;
+
+--Testando Questão 14
+SELECT nome, cidade, telefone FROM CLIENTES_ESTRANGEIROS;
+
+
+-- QUESTÃO 16
+CREATE OR REPLACE TRIGGER CNPJ_NAO_CADASTRADO 
+BEFORE INSERT ON NOTA_FISCAL 
+FOR EACH ROW 
+DECLARE total_cnpj number;
+BEGIN SELECT COUNT(*) AS total_cnpj FROM FORNECEDOR WHERE cnpj = :NEW.cnpj IF (total_cnpj = 0) 
+THEN raise_application_error(-20502,'CNPJ não cadastrado');
+END IF;
+END CNṔJ_NAO_CADASTRADO;
 
 
 
