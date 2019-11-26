@@ -53,17 +53,43 @@ WHERE c.cidade <> 'Campina Grande' and (NOT EXISTS (SELECT * FROM TELEFONE_CLIEN
 ALTER TABLE FORNECEDOR ADD CONSTRAINT emailCorretoFornecedor
 CHECK (REGEXP_INSTR(email, '^[[:alnum:]_]+@[[:alnum:]]+((\.)[[:alpha:]]+)+$') > 0);
 
+
 -- QUESTÃO 16
 CREATE OR REPLACE TRIGGER CNPJ_NAO_CADASTRADO 
-  BEFORE INSERT ON NOTA_FISCAL 
-  FOR EACH ROW 
-  DECLARE total_cnpj number;
-    BEGIN
-      SELECT COUNT(*) AS total_cnpj FROM FORNECEDOR WHERE cnpj = :NEW.cnpj IF (total_cnpj = 0) THEN
-        raise_application_error(-20502,'CNPJ não cadastrado');
-      END IF;
-    END CNPJ_NAO_CADASTRADO;
+BEFORE INSERT ON NOTA_FISCAL 
+FOR EACH ROW 
+DECLARE    
+    total_cnpj varchar;
+BEGIN SELECT COUNT(*) AS total_cnpj FROM FORNECEDOR WHERE cnpj = :NEW.cnpj IF (total_cnpj = 0) 
+THEN raise_application_error(-20502,'CNPJ não cadastrado');
+END IF;
+END
 
+
+-- QUESTÃO 17
+CREATE OR REPLACE TRIGGER LIMITE_TELEFONE_EXCEDIDO 
+BEFORE INSERT ON TELEFONE_CLIENTE
+FOR EACH ROW
+DECLARE total_telefones number;
+BEGIN 
+SELECT COUNT(DISTINCT t.cpf_cliente) INTO total_telefones
+FROM TELEFONE_CLIENTE t
+WHERE :new.cpf_cliente = t.cpf_cliente
+IF(total_telefone > 3) THEN
+RAISE_APPLICATION_ERROR(-20001,'Cliente já possui 3 telefones');
+END IF;
+END;
+
+--QUESTÃO 18
+
+--Questão 19
+
+--QUESTÃO 20
+CREATE OR REPLACE calculaEstoqueTotal 
+RETURN NUMBER
+AS resultFunction NUMBER
+CURSOR calculaEstoque IS SELECT p.quantidade FROM PRODUTO 
+sum(p.quantidade) AS resultFunction;
 
 
 
