@@ -1,8 +1,13 @@
-# 🎲 BancoDeDadosSQL
-#### Universidade Federal de Campina Grande
+# 🎲 PL/SQL (Oracle) Studies
+##### :mortar_board: Universidade Federal de Campina Grande
 
-## CompreAKI
-#### Projeto Banco de Dados
+<p>
+  Esse reposítorio apresenta soluções desenvolvidas por alunos, nas disciplina de Banco de Dados e disciplina Programação em Banco de Dados.
+  Utilizando, majoritariamente, PL/SQL (oracle).
+</p>
+
+### :moneybag: CompreAKI
+#### Projeto da disciplica de Banco de Dados:
 
 <img src="https://i.imgur.com/PyGgB8F.png" alt="" width="850" height="550" />
 
