@@ -1,4 +1,4 @@
-*/
+/*
 Conecte-se ao Oracle Apex (https://apex.oracle.com/i/index.html). Crie um bloco anônimo que recupere o sobrenome (last_name) e o email do empregado 101, bem como o nome do seu departamento. Os valores recuperados devem ser atribuídos a um registro. Imprima os valores na tela no seguinte formato:
 
 Last_name: Kochhar
