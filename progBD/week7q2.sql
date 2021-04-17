@@ -20,7 +20,7 @@ BEGIN
     LOOP
         FETCH j1 INTO relacoes;
         EXIT WHEN j1%NOTFOUND;
-        dbms_output.put_line(j1%ROWCOUNT || ' - O departamento: ' || relacoes.DEPARTMENT_NAME || ' possui ' || relacoes.NUM_EMPREGADOS || ' empregados.');
+        dbms_output.put_line(j1%ROWCOUNT || ' - O departamento ' || relacoes.DEPARTMENT_NAME || ' possui ' || relacoes.NUM_EMPREGADOS || ' empregados.');
     END LOOP;
     CLOSE j1;
 END;
